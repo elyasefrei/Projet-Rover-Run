@@ -149,8 +149,13 @@ t_localisation move(t_localisation loc, t_move move)
     t_localisation new_loc;
     if(move == T_LEFT || move == T_RIGHT || move == U_TURN) {
         new_loc.ori = rotate(loc.ori, move);
-    }
+        new_loc.pos.x = loc.pos.x;
+        new_loc.pos.y = loc.pos.y;
+        printf("%d et les valeur sont %d %d \n",new_loc.ori,new_loc.pos.y,new_loc.pos.x);
+    }else {
         new_loc = translate(loc, move);
+    }
+
    return new_loc;
 }
 
