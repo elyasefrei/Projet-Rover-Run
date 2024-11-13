@@ -1,0 +1,20 @@
+#include "tree.h"
+#include "queue.h"
+#include "stack.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "loc.h"
+#include "map.h"
+
+int ResearchVal(t_node *node, int MAX_DEPTH, int min_cost) {
+    if (node->depth != MAX_DEPTH) {
+        for(int i=0;i<node->nbSons;i++) {
+            ResearchVal(node->sons[i], MAX_DEPTH, min_cost);
+        }
+    }
+    else {
+        if(node->value<min_cost){
+            min_cost=node->value;
+        }
+    }
+}
