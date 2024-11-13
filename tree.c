@@ -22,7 +22,7 @@ void create_children(t_node *parent, int maxDepth) {
     }
 
     for (int i = 0; i < parent->nbSons; i++) {
-        parent->sons[i] = create_node(parent->value + 1, parent->depth + 1, parent->nbSons - 1);
+        parent->sons[i] = create_node(parent->value, parent->depth + 1, parent->nbSons - 1);
         create_children(parent->sons[i], maxDepth);
     }
 }
