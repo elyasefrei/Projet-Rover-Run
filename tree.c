@@ -27,3 +27,20 @@ void create_children(t_node *parent, int maxDepth) {
     }
 }
 
+
+t_node* ResearchVal(t_node *node, int MAX_DEPTH, int min_cost,t_node *Bestnode) {
+    if (node->depth != MAX_DEPTH) {
+        for(int i=0;i<node->nbSons;i++) {
+            ResearchVal(node->sons[i], MAX_DEPTH, min_cost,Bestnode);
+        }
+    }
+    else {
+        if(node->value<min_cost){
+            min_cost=node->value;
+            Bestnode=node;
+            return Bestnode;
+
+        }
+    }
+}
+
