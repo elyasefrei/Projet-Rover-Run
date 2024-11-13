@@ -5,6 +5,7 @@
     {
         int value;
         int depth;
+        struct s_node *parent;
         struct s_node **sons;
         int nbSons;
     } t_node;
