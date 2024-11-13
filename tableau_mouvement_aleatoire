@@ -23,7 +23,7 @@ int* create_tableau(int n) {
 
 int* mouvement_aleatoire(int n ) {
     int* tableau = create_tableau(MVT_TOTAL);
-    int* tableau_aleatoire = malloc(sizeof(int) * n);
+    int* tableau_aleatoire = malloc(sizeof(int) * NBR_MVT);
     for (int i = 0; i < n; i++) {
         int rdm = rand()%(MVT_TOTAL - i);
         tableau_aleatoire[i] = tableau[rdm];
