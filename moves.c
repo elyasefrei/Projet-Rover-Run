@@ -151,7 +151,7 @@ t_localisation move(t_localisation loc, t_move move)
         new_loc.ori = rotate(loc.ori, move);
         new_loc.pos.x = loc.pos.x;
         new_loc.pos.y = loc.pos.y;
-        printf("%d et les valeur sont %d %d \n",new_loc.ori,new_loc.pos.y,new_loc.pos.x);
+
     }else {
         new_loc = translate(loc, move);
     }
