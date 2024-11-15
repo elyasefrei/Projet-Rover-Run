@@ -3,12 +3,19 @@
 #include "tree.h"
 
 
-t_node * create_node(int value, int depth, int nbSons) {
+#include <stdio.h>
+#include <stdlib.h>
+#include "tree.h"
+
+
+t_node * create_node(int depth, int nbSons, t_node* parent) {
     t_node *node = malloc(sizeof(t_node));
-    node->value = value;
+    node->value = 0;
     node->depth = depth;
     node->nbSons = nbSons;
     node->sons = malloc(nbSons * sizeof(t_node *));
+    node->movement=0;
+    node->parent=parent;
     for (int i = 0; i < nbSons; i++) {
         node->sons[i] = NULL;
     }
@@ -22,12 +29,14 @@ void create_children(t_node *parent, int maxDepth) {
     }
 
     for (int i = 0; i < parent->nbSons; i++) {
-        parent->sons[i] = create_node(parent->value, parent->depth + 1, parent->nbSons - 1);
+        parent->sons[i] = create_node(parent->depth + 1, parent->nbSons - 1,parent);
         create_children(parent->sons[i], maxDepth);
     }
 }
 
 
+
+/*
 t_node* ResearchVal(t_node *node, int MAX_DEPTH, int min_cost,t_node *Bestnode) {
     if (node->depth != MAX_DEPTH) {
         for(int i=0;i<node->nbSons;i++) {
@@ -43,4 +52,5 @@ t_node* ResearchVal(t_node *node, int MAX_DEPTH, int min_cost,t_node *Bestnode) 
         }
     }
 }
+*/
 
