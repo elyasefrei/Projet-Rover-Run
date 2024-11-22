@@ -34,6 +34,20 @@ void create_children(t_node *parent, int maxDepth) {
     }
 }
 
+void printTree(t_node* root) {
+    if (root == NULL) {
+        return;  // Arbre vide ou fin de branche
+    }
+
+    // Afficher les informations du nœud actuel
+    printf("Valeur: %d, Mouvement: %d, Profondeur: %d, NbSons: %d\n",
+           root->value, root->movement, root->depth, root->nbSons);
+
+    // Parcourir tous les fils
+    for (int i = 0; i < root->nbSons; i++) {
+        printTree(root->sons[i]);  // Appel récursif sur chaque fils
+    }
+}
 
 
 /*
