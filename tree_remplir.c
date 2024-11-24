@@ -35,6 +35,7 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
 
             }
         }k=0;
+        printf("POSITION ROBOT : %d %d et orientation : %d  et cout : %d\n",robot_temp.pos.x,robot_temp.pos.y,robot_temp.ori,node->sons[i]->value);
 
         remplir_arbre(node->sons[i],robot_temp,map,tableau);
 
