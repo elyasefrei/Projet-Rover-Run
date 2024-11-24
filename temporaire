@@ -1,0 +1,74 @@
+void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaualeatoire) {
+
+    int* tableau=malloc(sizeof(int)*(node->nbSons-1));
+
+    if(node->depth==MAX_DEPTH) {
+        return;
+    }
+
+    for (int i=0;i<node->nbSons;i++)
+    {
+        t_localisation robot_temp=robot;
+       /* if(map->soils[robot_temp.pos.x][robot_temp.pos.y]==2){
+            Erg(&robot_temp,tableaualeatoire[i]);
+        }
+        
+      else {
+            updateLocalisation(&robot_temp,tableaualeatoire[i]);
+
+        }
+*/
+updateLocalisation(&robot_temp,tableaualeatoire[i]);
+        node->sons[i]->movement=tableaualeatoire[i];
+
+
+
+        if(robot_temp.pos.x>=map->x_max || robot_temp.pos.y>=map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0 || node->parent->value>=500) {
+        node->sons[i]->value=10000;
+        }
+        else if(tableaualeatoire[i]==1)
+        {
+            if(Survol1(robot,map)) {
+                node->sons[i]->value=10000;
+            }
+            else {
+                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+            }
+
+
+        }
+        else if(tableaualeatoire[i]==2)
+        {
+            if(Survol2(robot,map)) {
+                node->sons[i]->value=10000;
+            }
+            else {
+                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+            }
+
+        }
+
+        else {
+            node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+        }
+
+        int k = 0;
+        for (int j = 0; j < node->nbSons; j++) {
+            if (j != i) {
+                tableau[k] = tableaualeatoire[j];
+                k++;
+
+            }
+        }k=0;
+        //printf("POSITION ROBOT : %d %d et orientation : %d  et cout : %d\n",robot_temp.pos.x,robot_temp.pos.y,robot_temp.ori,node->sons[i]->value);//
+
+        remplir_arbre(node->sons[i],robot_temp,map,tableau);
+
+
+
+
+
+    }
+    free(tableau);
+
+}
