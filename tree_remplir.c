@@ -19,9 +19,9 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
     {
         updateLocalisation(&robot_temp,tableaualeatoire[i]);
         node->sons[i]->movement=tableaualeatoire[i];
-        if(robot_temp.pos.x>map->x_max || robot_temp.pos.y>map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0) {
+        if(robot_temp.pos.x>map->x_max || robot_temp.pos.y>map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0 || node->parent->value>=500) {
            node->sons[i]->value=10000;
-            continue;
+
         }
         else {
             node->sons[i]->value=map->costs[robot_temp.pos.x][robot_temp.pos.y];
@@ -31,7 +31,6 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
         for (int j = 0; j < node->nbSons; j++) {
             if (j != i) {
                 tableau[k] = tableaualeatoire[j];
-                printf("tableau k : %d",tableau[k]);
                 k++;
 
             }
