@@ -97,4 +97,8 @@ int calculer_total_noeuds(int nbMouvements);
  */
 int produit(int nbMouvements, int d);
 
+int Survol1(t_localisation robot,t_map* map);
+int Survol2(t_localisation robot,t_map* map);
+
+
 #endif //UNTITLED1_TREE_H
