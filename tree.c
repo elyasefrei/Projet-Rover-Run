@@ -34,20 +34,6 @@ void create_children(t_node *parent, int maxDepth) {
     }
 }
 
-void printTree(t_node* root) {
-    if (root == NULL) {
-        return;  // Arbre vide ou fin de branche
-    }
-
-    printf("Valeur: %d, Mouvement: %d, Profondeur: %d, NbSons: %d\n",
-           root->value, root->movement, root->depth, root->nbSons);
-
-    // Parcourir tous les fils
-    for (int i = 0; i < root->nbSons; i++) {
-        printTree(root->sons[i]);  
-    }
-}
-
 
 /*
 t_node* ResearchVal(t_node *node, int MAX_DEPTH, int min_cost,t_node *Bestnode) {
