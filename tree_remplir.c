@@ -7,7 +7,7 @@
 #include "stdio.h"
 
 //En cours//
-void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaualeatoire, int MAX_DEPTH) {
+void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaualeatoire) {
     t_localisation robot_temp=robot;
     int* tableau=malloc(sizeof(int)*(node->nbSons-1));
     int k = 0;
@@ -19,10 +19,14 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
     {
         updateLocalisation(&robot_temp,tableaualeatoire[i]);
         node->sons[i]->movement=tableaualeatoire[i];
-        if(robot_temp.pos.x>map->x_max || robot_temp.pos.y>map->y_max) {
-            return;
+        if(robot_temp.pos.x>map->x_max || robot_temp.pos.y>map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0) {
+           node->sons[i]->value=10000;
+            continue;
         }
-        node->sons[i]->value=map->costs[robot_temp.pos.x][robot_temp.pos.y];
+        else {
+            node->sons[i]->value=map->costs[robot_temp.pos.x][robot_temp.pos.y];
+        }
+
 
         for (int j = 0; j < node->nbSons; j++) {
             if (j != i) {
@@ -33,7 +37,8 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
             }
         }k=0;
 
-        remplir_arbre(node->sons[i],robot_temp,map,tableau,MAX_DEPTH);
+        remplir_arbre(node->sons[i],robot_temp,map,tableau);
+
 
 
 
@@ -43,7 +48,14 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
 
 }
 
+void printTree(t_node* root) {
+    if (root == NULL) {
+        return;  // Arbre vide ou fin de branche
+    }
 
+    // Afficher les informations du nœud actuel
+    printf("Valeur: %d, Mouvement: %d, Profondeur: %d, NbSons: %d\n",
+           root->value, root->movement, root->depth, root->nbSons);
 
     // Parcourir tous les fils
     for (int i = 0; i < root->nbSons; i++) {
