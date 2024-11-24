@@ -97,8 +97,20 @@ int calculer_total_noeuds(int nbMouvements);
  */
 int produit(int nbMouvements, int d);
 
+/**
+ * @brief Fonction de survol 1
+ * @param robot La localisation du robot
+ * @param map La carte
+ * @return Le coût de l'option
+ */
 int Survol1(t_localisation robot,t_map* map);
-int Survol2(t_localisation robot,t_map* map);
 
+/**
+ * @brief Fonction de survol 2
+ * @param robot La localisation du robot
+ * @param map La carte
+ * @return Le coût de l'option
+ */
+int Survol2(t_localisation robot,t_map* map);
 
 #endif //UNTITLED1_TREE_H
