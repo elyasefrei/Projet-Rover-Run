@@ -6,7 +6,15 @@
 #include "moves.h"
 #include "time.h"
 
-
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Création d'un noeud de l'arbre 
+* @param depth : Depth permet d'assigner la profondeur de notre nouveau nœud créé.
+* @param nbSons : Il désigne le nombre de fils possibles, plus précisément le nombre de choix de mouvements que le robot peut effectuer.
+* @param parent : parent désigne le noeud parent du noeud crée 
+* @param max_depth : max_depth représente la profondeur maximale que notre arbre peut atteindre.
+* @return il va nous retourner un nouveau noeud 
+*/
 t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
     t_node *node = malloc(sizeof(t_node));
     node->value = 0;
@@ -26,7 +34,13 @@ t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
     return node;
 }
 
-
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction récursive qui crée des nœuds enfants à partir d'un nœud parent, jusqu'à atteindre une certaine profondeur maximale
+* @param parent : parent désigne le noeud parent de l'enfant crée 
+* @param max_depth : max_depth représente la profondeur maximale que notre arbre peut atteindre.
+* @return Un arbre n-aires 
+*/
 void create_children(t_node *parent, int max_depth) {
     if (parent->depth >= max_depth) {
         return;
@@ -39,35 +53,44 @@ void create_children(t_node *parent, int max_depth) {
 }
 
 
-
-void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaualeatoire, int max_depth) {
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction qui remplit l'arbre n-aires en ajoutant les "costs", les nouvelles positions du robot et les mouvements effectués par le robot
+* @param node : Prend en paramètre un noeud.
+* @param robot : Prend en paramètre les coordonnées du robot.
+* @param map : Prend en paramètre la carte générée ( carte qui représente mars ).
+* @param tableau_aleatoire : Prend en paramètre le tableau aléatoire.
+* @param max_depth : max_depth représente la profondeur maximale que notre arbre peut atteindre.
+* @return 
+*/
+void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableau_aleatoire, int max_depth) {
 
     int* tableau=malloc(sizeof(int)*(node->nbSons-1));
 
 
-    if(node->depth==max_depth) {
+    if(node->depth==max_depth) {// si la profondeur de du noeud est égal a max_depth on sort de la fonction 
         return;
     }
 
     for (int i=0;i<node->nbSons;i++)
     {
         t_localisation robot_temp=robot;
-        if(map->soils[robot_temp.pos.y][robot_temp.pos.x]==2)
+        if(map->soils[robot_temp.pos.y][robot_temp.pos.x]==2)// si le robot atteint une case Erg
             {
-            Erg(&robot_temp,tableaualeatoire[i]);
+            Erg(&robot_temp,tableau_aleatoire[i]); // il entre dans la fonction Erg
         }
         else {
-            updateLocalisation(&robot_temp,tableaualeatoire[i]);
+            updateLocalisation(&robot_temp,tableau_aleatoire[i]); // sinon il entre dans la fonction updateLocalisation
 
         }
-        node->sons[i]->movement=tableaualeatoire[i];
+        node->sons[i]->movement=tableau_aleatoire[i];
 
 
-
+        // si la position du robot est dehors de la map alors on met son cost a 10000
         if(robot_temp.pos.x>=map->x_max || robot_temp.pos.y>=map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0 || node->parent->value>=500) {
         node->sons[i]->value=10000;
         }
-        else if(tableaualeatoire[i]==1)
+        else if(tableau_aleatoire[i]==1)// si on tombe sur avancer de 10
         {
             if(Survol1(robot,map)) {
                 node->sons[i]->value=10000;
@@ -78,7 +101,7 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
 
 
         }
-        else if(tableaualeatoire[i]==2)
+        else if(tableau_aleatoire[i]==2)
         {
             if(Survol2(robot,map)) {
                 node->sons[i]->value=10000;
@@ -92,15 +115,16 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
         else {
             node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
         }
-
+        // Permet de retirer le mouvement qui a déjà été utilisé
         int k = 0;
         for (int j = 0; j < node->nbSons; j++) {
             if (j != i) {
-                tableau[k] = tableaualeatoire[j];
+                tableau[k] = tableau_aleatoire[j];
                 k++;
 
             }
         }k=0;
+        // Permet d'arrêter la fonction de remplissage de l'arbre si le coût dépasse 10 000.
         if (node->sons[i]->value>500) {
             node->sons[i]->nbSons=0;
             node->sons[i]->depth=max_depth;
@@ -118,6 +142,12 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableaual
 
 }
 
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction qui permet d'afficher l'ensemble de l'arbre avec les informations associées.
+* @param root : Prend en paramètre la racine donc tous l'arbre en question.
+* @return 
+*/
 void printTree(t_node* root) {
     if (root == NULL) {
         return;  // Arbre vide ou fin de branche
@@ -132,7 +162,13 @@ void printTree(t_node* root) {
         printTree(root->sons[i]);  // Appel récursif sur chaque fils
     }
 }
-
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction qui permet de vérifier si le déplacement de 20 ne survole pas une crevasse.
+* @param robot : Prend en paramètre les coordonées du robot.
+* @param map : Prend en paramètre la map de mars.
+* @return 0 si il ne survole pas une creuvasse ou qu'il est pas en dehors de la map, 1 si c'est le contraire
+*/
 int Survol1(t_localisation robot,t_map* map) {
     t_localisation robot_temp=robot;
     updateLocalisation(&robot_temp,0);
@@ -147,6 +183,13 @@ int Survol1(t_localisation robot,t_map* map) {
         return 0;
 
 }
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction qui permet de vérifier si le déplacement de 30 ne survole pas une crevasse.
+* @param robot : Prend en paramètre les coordonées du robot.
+* @param map : Prend en paramètre la map de mars.
+* @return 0 si il ne survole pas une creuvasse ou qu'il est pas en dehors de la map, 1 si c'est le contraire
+*/
 int Survol2(t_localisation robot,t_map* map) {
     if(Survol1(robot,map)) {
         return 1;
@@ -165,8 +208,13 @@ int Survol2(t_localisation robot,t_map* map) {
 
 }
 
-
-
+/*-------------------------------------------------------------------------------------------------------------------- */
+/* 
+* @brief Fonction qui permet d'appliquer l'effet d'Erg sur le robot.
+* @param robot : Prend en paramètre les coordonées du robot.
+* @param mouvement : Elle prend en paramètre le mouvement que va effectuer le robot
+* @return
+*/
 void Erg(t_localisation* robot,t_move mouvement) {
     if (mouvement == 0 || mouvement == 3 || mouvement == 4 || mouvement == 5) {
         return;
