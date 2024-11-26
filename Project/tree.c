@@ -36,7 +36,7 @@ t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
 
 /*-------------------------------------------------------------------------------------------------------------------- */
 /* 
-* @brief Fonction récursive qui crée des nœuds enfants à partir d'un nœud parent, jusqu'à atteindre une certaine profondeur maximale
+* @brief Fonction récursive qui crée des noeuds enfants à partir d'un nœud parent, jusqu'à atteindre une certaine profondeur maximale
 * @param parent : parent désigne le noeud parent de l'enfant crée 
 * @param max_depth : max_depth représente la profondeur maximale que notre arbre peut atteindre.
 * @return Un arbre n-aires 
