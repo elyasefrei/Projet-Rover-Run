@@ -2,6 +2,13 @@
 #include  "moves.h"
 #include "tree.h"
 
+
+/* prototype of local functions */
+/* local functions are used only in this file, as helper functions */
+
+int* create_tableau(int n);
+
+
 /*-------------------------------------------------------------------------------------------------------------------- */
 /* 
 * @brief Création d'un tableau qui recensera tous les mouvements possibles que le robot peut adopter, ainsi que leur probabilité associé
