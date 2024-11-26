@@ -49,12 +49,18 @@ t_localisation move(t_localisation, t_move);
  * @return none
  */
 void updateLocalisation(t_localisation *, t_move);
-
-
+/**
+ * @brief Converts a `t_orientation` enum value into a string
+ *
+ * @param ori The orientation to convert
+ * @return A string corresponding to the `t_orientation` value
+*/
 char *getoriAsString(t_orientation ori);
-
+/**
+ * @brief Generates an array of random moves
+ *
+ * @param n The number of moves to generate
+ * @return A dynamically allocated array of `int` representing the moves
+ */
 int* mouvement_aleatoire(int n);
-
-
-int* create_tableau(int n);
 #endif //UNTITLED1_MOVES_H
