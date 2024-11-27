@@ -85,7 +85,7 @@ int calculer_total_noeuds(int nbMouvements,int max_depth);
 /**
  * @brief Fonction récursive qui calcule le produit des nombres de mouvements possibles sous forme de factorielle.
  * @param nbMouvement : nombres de mouvements possibles
- * @param d : un entier qui va être la valeur maximum qui soustrait nbMouvement
+ * @param d : un entier qui désigne la profondeur actuelle
  * @return le produit
  */
 int produit(int nbMouvements, int d);
