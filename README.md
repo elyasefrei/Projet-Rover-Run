@@ -2,7 +2,7 @@
 # Projet Rover Run!
 Contributeurs: SHAN Yanick, TARZET Elyas, GUIEME Victor
 
-liens github: https://github.com/elyasefrei/projet_c_efrei/tree/main/Project
+liens github: [https://github.com/elyasefrei/projet_c_efrei/tree/main/Project](https://github.com/elyasefrei/projet_c_efrei.git)
 
 Notre projet consiste a crée un mini jeu d'un robot sur mars qui doit retrouver son chemin pour aller a la base. Chaque phase le robot devra trouvez la combinaison de mouvement le plus efficace pour etre le plus proche de la base qui est la condition de fin de notre jeu.
 
