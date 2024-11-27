@@ -19,6 +19,7 @@ t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
     t_node *node = malloc(sizeof(t_node));
     node->value = 0;
     node->depth = depth;
+    // Si on atteint la profondeur maximale, le noeud n'a pas de fils
     if(depth==max_depth) {
         node->nbSons=0;
     }
@@ -28,6 +29,7 @@ t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
     node->sons = malloc(nbSons * sizeof(t_node *));
     node->movement=0;
     node->parent=parent;
+    // Initialisation des fils à NULL
     for (int i = 0; i < nbSons; i++) {
         node->sons[i] = NULL;
     }
@@ -43,12 +45,12 @@ t_node * create_node(int depth, int nbSons, t_node* parent,int max_depth) {
 */
 void create_children(t_node *parent, int max_depth) {
     if (parent->depth >= max_depth) {
-        return;
+        return;// Si on atteint la profondeur maximale, on arrête la création des enfants
     }
 
     for (int i = 0; i < parent->nbSons; i++) {
         parent->sons[i] = create_node(parent->depth + 1, parent->nbSons - 1,parent,max_depth);
-        create_children(parent->sons[i],max_depth);
+        create_children(parent->sons[i],max_depth);// Appel récursif pour créer les enfants des fils
     }
 }
 
@@ -75,9 +77,10 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableau_a
     for (int i=0;i<node->nbSons;i++)
     {
         t_localisation robot_temp=robot;
-        if(map->soils[robot_temp.pos.y][robot_temp.pos.x]==2)// si le robot atteint une case Erg
+        // Verification si on est pas sur un Erg
+        if(map->soils[robot_temp.pos.y][robot_temp.pos.x]==2)
             {
-            Erg(&robot_temp,tableau_aleatoire[i]); // il entre dans la fonction Erg
+            Erg(&robot_temp,tableau_aleatoire[i]); // Si c'est une case Erg, on applique l'effet Erg
         }
         else {
             updateLocalisation(&robot_temp,tableau_aleatoire[i]); // sinon il entre dans la fonction updateLocalisation
@@ -86,34 +89,35 @@ void remplir_arbre(t_node* node, t_localisation robot,t_map* map, int* tableau_a
         node->sons[i]->movement=tableau_aleatoire[i];
 
 
-        // si la position du robot est dehors de la map alors on met son cost a 10000
+        // Vérification de la validité de la nouvelle position du robot
         if(robot_temp.pos.x>=map->x_max || robot_temp.pos.y>=map->y_max || robot_temp.pos.x<0 || robot_temp.pos.y<0 || node->parent->value>=500) {
-        node->sons[i]->value=10000;
+        node->sons[i]->value=10000;   // Si la position est invalide, on affecte un coût a 10000
         }
+        // Vérification si on survol pas une crevasse
         else if(tableau_aleatoire[i]==1)// si on tombe sur avancer de 10
         {
             if(Survol1(robot,map)) {
-                node->sons[i]->value=10000;
+                node->sons[i]->value=10000;// si on survol alors on affecte un coût a 10000
             }
             else {
-                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x]; // sinon on affecte le cost réel associé a la map
             }
 
 
         }
-        else if(tableau_aleatoire[i]==2)
+        else if(tableau_aleatoire[i]==2)// si on tombe sur avancer de 30
         {
             if(Survol2(robot,map)) {
-                node->sons[i]->value=10000;
+                node->sons[i]->value=10000;// si on survol alors on affecte un coût a 10000
             }
             else {
-                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+                node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x]; // sinon on affecte le cost réel associé a la map
             }
 
         }
 
         else {
-            node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];
+            node->sons[i]->value=map->costs[robot_temp.pos.y][robot_temp.pos.x];// sinon on affecte le cost réel associé a la map
         }
         // Permet de retirer le mouvement qui a déjà été utilisé
         int k = 0;
