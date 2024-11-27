@@ -41,9 +41,9 @@ int* mouvement_aleatoire(int n ) {
     int* tableau = create_tableau(MVT_TOTAL); // va faire un appel pour crée le tableau avec tous les mouvements possibles
     int* tableau_aleatoire = malloc(sizeof(int) * n);
     for (int i = 0; i < n; i++) {
-        int rdm = rand()%(MVT_TOTAL - i);
-        tableau_aleatoire[i] = tableau[rdm];
-        tableau[rdm] = tableau[MVT_TOTAL - i - 1];
+        int rdm = rand()%(MVT_TOTAL - i); // Générer un nombre aléatoire entre 0 et MVT_TOTAL - i (pour éviter de réutiliser les éléments déjà choisis)
+        tableau_aleatoire[i] = tableau[rdm]; // Ajouter le nombre aléatoire dans le tableau_aleatoire
+        tableau[rdm] = tableau[MVT_TOTAL - i - 1]; // Échanger le mouvement qu'on a utiliser avec le dernier élément 
     }
 
     free(tableau); // libérer le tableau mouvement du robot ( pas ranger aléatoirement)
